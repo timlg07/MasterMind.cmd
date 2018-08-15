@@ -38,7 +38,7 @@ set color9=5
 
 
 mode con cols=120 lines=40
-title batchgame++ by TimLG
+title MASTERMIND by Tim Greller
 ::--start =load data
 if not exist profileinfo.settings (
   set "colornum=6"
@@ -221,7 +221,8 @@ goto intrface
 
 
 :settings
-
+cls&echo noch nicht verfuegbar.&timeout /t 2
+goto startanimation
 
 :WIN
 title GEWONNEN
