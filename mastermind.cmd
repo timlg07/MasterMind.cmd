@@ -1,238 +1,179 @@
 @echo off
 @setlocal enabledelayedexpansion
-@color 0f
 
-::--color info;
-:: 9 = blau
-:: a = grün
-:: c = rot
-:: e = gelb
-:: d = magenta
-:: b = zyan
-::--standard^
-:: f = weiß
-:: 6 = ocker
-:: 5 = lila
-::--all 9 colors;
+set color[1]=9
+set color[2]=a
+set color[3]=c
+set color[4]=e
+set color[5]=d
+set color[6]=b
+set color[7]=f
+set color[8]=6
+set color[9]=5
 
-::def;color
+set /a colornum = 6
+set /a score = 0
+set /a cols = 120
+set /a lines = 30
+set /a bottom = lines - 1
+set /a right = cols - 1
+set "backgroundcolor=0"
 
-::deleted  xxx   ::set "color=9--a--c--e--d--b--f--6--5"
-::deleted  xxx   ::for /f "tokens=%colornum% delims=--" %%a in ("%color%") 
-
-set color1=9
-set color2=a
-set color3=c
-set color4=e
-set color5=d
-set color6=b
-set color7=f
-set color8=6
-set color9=5
+mode con cols=%cols% lines=%lines%
+color %backgroundcolor%f
+title MASTERMIND
 
 
-::--mode info;
-:: mode1 = jede Farbe nur ein mal
-:: mode2 = jede Farbe darf öfters vorkommen
-::--all 2 modes;
-
-
-mode con cols=120 lines=40
-title MASTERMIND by Tim Greller
-::--start =load data
-if not exist profileinfo.settings (
-  set "colornum=6"
-  set "mode=1"
-  set "backgroundcolor=0"
-  set "score=0"
- ) else (
-  set /p profileinfo=<profileinfo.settings
-  for /f "tokens=1,2,3,4 delims=:" %%a in ("!profileinfo!") do (
-	 set colornum=%%a
-	 set mode=%%b
-	 set backgroundcolor=%%c
-	 set score=%%d
-    )
-  )
 ::--end =load data
-:startanimation
-::--start =startanimation
-batbox /g 6  3 /c 0x0c /d "MASTERMINDbatch"   /a 184 /w 200
-batbox /g 6  3 /c 0x04 /d "M" /g 7  3 /c 0x0f /d "A" /w 50
-batbox /g 7  3 /c 0x04 /d "A" /g 8  3 /c 0x0f /d "S" /w 50
-batbox /g 8  3 /c 0x04 /d "S" /g 9  3 /c 0x0f /d "T" /w 50
-batbox /g 9  3 /c 0x04 /d "T" /g 10 3 /c 0x0f /d "E" /w 50
-batbox /g 10 3 /c 0x04 /d "E" /g 11 3 /c 0x0f /d "R" /w 50
-batbox /g 11 3 /c 0x04 /d "R" /g 12 3 /c 0x0f /d "M" /w 50
-batbox /g 12 3 /c 0x04 /d "M" /g 13 3 /c 0x0f /d "I" /w 50
-batbox /g 13 3 /c 0x04 /d "I" /g 14 3 /c 0x0f /d "N" /w 50
-batbox /g 14 3 /c 0x04 /d "N" /g 15 3 /c 0x0f /d "D" /w 50
-batbox /g 15 3 /c 0x04 /d "D" /g 16 3 /c 0x0f /d "b" /w 50
-batbox /g 16 3 /c 0x04 /d "b" /g 17 3 /c 0x0f /d "a" /w 50
-batbox /g 17 3 /c 0x04 /d "a" /g 18 3 /c 0x0f /d "t" /w 50
-batbox /g 18 3 /c 0x04 /d "t" /g 19 3 /c 0x0f /d "c" /w 50
-batbox /g 19 3 /c 0x04 /d "c" /g 20 3 /c 0x0f /d "h" /w 50
-batbox /g 20 3 /c 0x04 /d "h" /g 21 3 /c 0x0f /a 184 /w 200
-batbox /g 6  3 /c 0x04 /d "MASTERMINDbatch" /a 184 /w 200 
-batbox /g 6  3 /c 0x0c /d "MASTERMINDbatch" /a 184 /w 200 
-batbox /g 6  3 /c 0x04 /d "MASTERMINDbatch" /a 184 /w 200 
-batbox /g 6  3 /c 0x0c /d "MASTERMINDbatch" /a 184 /w 200 
-::--end =startanimation
-batbox /g 8 6 /c 0x0F /d ">>starten"
-batbox /g 8 8 /c 0x09 /d "Einstellungen"
-batbox /g 119 39
-:stanmenu
-for /f "tokens=1,2 delims=:" %%a in ('batbox /m') do (
-  set x=%%a
-  set y=%%b
- )
-if %x% GEQ 6 if %x% LEQ 22 (
-  if %y%==6 cls && goto gstart
-  if %y%==8 cls && goto settings
-  if %y%==3        goto startanimation
- )
-goto stanmenu
-
-:gstart
-title GameSTART;
-set  "versuchnr=1"
-set /a   "count=1"
-set /a verlaufY=11
-
-::--festlegen der Farben
-
-
-:festlege
-if %mode%==2 goto m2festle
-SET /a Zufall=1+(%colornum%-1+1)*%random%/32768 
-echo:%festgelegtefarben%|findstr /c:"!color%Zufall%!." >nul && goto festlege
-set rfield!count!=!color%Zufall%!
-set festgelegtefarben=%festgelegtefarben%!color%Zufall%!.
-set /a count+=1
-if %count%==5 goto intrface
-goto festlege
-
-:intrface
-::--building interface
-batbox /g 4 3 /c 0x%backgroundcolor%7 /d "Farben:"
-set /a count=1
- :intfloop
- set /a ylevel=count+4
- batbox /g 4 %ylevel% /c 0x%backgroundcolor%!color%count%! /d "O"
- if %count% GEQ %colornum% goto inteface
- set /a count+=1
- goto intfloop
-:inteface
-title Tragen sie ihre Vermutung ein:
-batbox /g 30  3 /c 0x%backgroundcolor%7 /d "Erst eines der Felder dann eine farbe anklicken"
-batbox /g 30  5 /c 0x%backgroundcolor%f /d "+----+----+----+----+"
-batbox /g 30  6 /c 0x%backgroundcolor%f /d "|    |    |    |    |   >EINLOGGEN"
-batbox /g 30  7 /c 0x%backgroundcolor%f /d "|    |    |    |    |"
-batbox /g 30  8 /c 0x%backgroundcolor%f /d "+----+----+----+----+"
-batbox /g 20 10 /c 0x%backgroundcolor%f /d "Verlauf:"
-
-::--auswahl eines Feldes und einer Farbe
-
-:auswahl1
-for /f "tokens=1,2 delims=:" %%a in ('batbox /m') do (
-  set x=%%a
-  set y=%%b
- )
-
-
-if %y%==6 if %x% GEQ 53 if %x% LEQ 65 goto rfctest1
-
-if %y% GEQ 6 if %y% LEQ 7 (
- if %x% GEQ 32 ( 
-  if %x% LEQ 35 ( batbox /g 31 6 /c 0x%backgroundcolor%f /d " xx " /g 31 7 /d " xx " 
-    set "afeld=1" 
-	goto auswahlc
+:startAnimation
+	call src\animations start
+:startMenu
+	batbox /g 8 6 /c 0x0F /d ">>starten"
+	batbox /g 8 8 /c 0x09 /d "Anzahl der Farben: [-] %colornum% [+]"
+	batbox /g %right% %bottom%
+	for /f "tokens=1,2 delims=:" %%x in ('batbox /m') do (
+		if %%y equ 6 if %%x geq 8 if %%x leq 17 (
+			cls
+			goto startGame
+		)
+		if %%y equ 8 (
+			if %%x gtr 26 if %%x lss 30 if %colornum% gtr 4 (
+				set /a colornum -= 1
+				goto startMenu
+			)
+			if %%x gtr 32 if %%x lss 36 if %colornum% lss 9 (
+				set /a colornum += 1
+				goto startMenu
+			)
+		)
 	)
-  if %x% LEQ 40 ( batbox /g 36 6 /c 0x%backgroundcolor%f /d " xx " /g 36 7 /d " xx " 
-    set "afeld=2" 
-	goto auswahlc
+goto startMenu
+
+:startGame
+	set /a tryCount = 1
+	set /a history_Y = 11
+	set "secretColors="
+	set /a _i = 1
+	
+	:chooseColors
+		:: pick random color from the array:
+		set /a _index = 1 + colornum * %random%/32768 
+		set "_color=!color[%_index%]!"
+		:: make sure no color occurs twice:
+		for /L %%i in (1 1 %_i%) do (
+			if "!secretColors[%%i]!"=="%_color%" (
+				goto chooseColors
+			)
+		)
+		set "secretColors[%_i%]=%_color%"
+		if %_i% geq 4 goto render
+	set /a _i += 1
+	goto chooseColors
+	
+
+:render
+	batbox /g 4 3 /c 0x%backgroundcolor%7 /d "Farben:"
+	set /a _i = 1
+		:colorSelection
+			set /a ylevel = _i + 4
+			batbox /g 4 %ylevel% /c 0x%backgroundcolor%!color[%_i%]! /d "O"
+			set /a _i += 1
+		if %_i% leq %colornum% goto colorSelection
+
+	batbox /g 30  3 /c 0x%backgroundcolor%7 /d "Erst eines der Felder dann eine farbe anklicken"
+	batbox /g 30  5 /c 0x%backgroundcolor%f /d "+----+----+----+----+"
+	batbox /g 30  6 /c 0x%backgroundcolor%f /d "|    |    |    |    |   >EINLOGGEN"
+	batbox /g 30  7 /c 0x%backgroundcolor%f /d "|    |    |    |    |"
+	batbox /g 30  8 /c 0x%backgroundcolor%f /d "+----+----+----+----+"
+	batbox /g 20 10 /c 0x%backgroundcolor%f /d "Verlauf:"
+
+:selectField
+	for /f "tokens=1,2 delims=:" %%x in ('batbox /m') do (
+		if %%y equ 6 if %%x geq 53 if %%x leq 65 goto checkSelection
+		if %%y geq 6 if %%y leq 7 (
+			if %%x geq 32 ( 
+				if %%x leq 35 ( 
+					batbox /g 31 6 /c 0x%backgroundcolor%f /d " xx " /g 31 7 /d " xx " 
+					set /a fieldIndex = 1 
+					goto selectColor
+				)
+				if %%x leq 40 ( 
+					batbox /g 36 6 /c 0x%backgroundcolor%f /d " xx " /g 36 7 /d " xx " 
+					set /a fieldIndex = 2
+					goto selectColor
+				)
+				if %%x leq 45 (
+					batbox /g 41 6 /c 0x%backgroundcolor%f /d " xx " /g 41 7 /d " xx " 
+					set /a fieldIndex = 3
+					goto selectColor
+				)
+				if %%x leq 50 ( 
+					batbox /g 46 6 /c 0x%backgroundcolor%f /d " xx " /g 46 7 /d " xx " 
+					set /a fieldIndex = 4
+					goto selectColor
+				)
+			)
+		)
 	)
-  if %x% LEQ 45 ( batbox /g 41 6 /c 0x%backgroundcolor%f /d " xx " /g 41 7 /d " xx " 
-    set "afeld=3"
-	goto auswahlc
+goto selectField
+
+:selectColor
+	for /f "tokens=1,2 delims=:" %%x in ('batbox /m') do (
+		if %%x geq 3 if %%x leq 5 (
+			if %%y geq 5 if %%y leq %ylevel% (
+				set /a colorIndex = %%y - 4
+				goto selectionFinished
+			)
+		)
 	)
-  if %x% LEQ 50 ( batbox /g 46 6 /c 0x%backgroundcolor%f /d " xx " /g 46 7 /d " xx " 
-    set "afeld=4"
-	goto auswahlc
-	)
- )
-)
+goto selectColor
 
-goto auswahl1
+:selectionFinished
+	set field[%fieldIndex%]=!color[%colorIndex%]!
 
-:auswahlc
-for /f "tokens=1,2 delims=:" %%a in ('batbox /m') do (
-  set x=%%a
-  set y=%%b
- )
-if %x% GEQ 3 if %x% LEQ 5 (
-  if %y% GEQ 5 if %y% LEQ %ylevel% (
-	goto ausgewlt
-   )
- )
-goto auswahlc
+	:showColor
+	if defined field[1] batbox /g 31 6 /c 0x%backgroundcolor%%field[1]% /d " xx " /g 31 7 /d " xx "
+	if defined field[2] batbox /g 36 6 /c 0x%backgroundcolor%%field[2]% /d " xx " /g 36 7 /d " xx "
+	if defined field[3] batbox /g 41 6 /c 0x%backgroundcolor%%field[3]% /d " xx " /g 41 7 /d " xx "
+	if defined field[4] batbox /g 46 6 /c 0x%backgroundcolor%%field[4]% /d " xx " /g 46 7 /d " xx "
 
-:ausgewlt
-set /a c=y-4
-set field%afeld%=!color%c%!
+goto selectField
 
-::--anzeigen der ausgewählten Farbe 
-:showcolr
-if defined field1 batbox /g 31 6 /c 0x%backgroundcolor%%field1% /d " xx " /g 31 7 /d " xx "
-if defined field2 batbox /g 36 6 /c 0x%backgroundcolor%%field2% /d " xx " /g 36 7 /d " xx "
-if defined field3 batbox /g 41 6 /c 0x%backgroundcolor%%field3% /d " xx " /g 41 7 /d " xx "
-if defined field4 batbox /g 46 6 /c 0x%backgroundcolor%%field4% /d " xx " /g 46 7 /d " xx "
-
-goto auswahl1
-
-::--ende;
  
 
-:rfctest1
-::--testen wie viele Farben enthalten sind
-set /a colorRight=positionRight=0
+:checkSelection
+	set /a correctColors = correctPositions = 0
 
-for /L %%i in (1,1,4) do (
-	if [!field%%i!]==[] goto intrface
-	echo:%festgelegtefarben%|findstr /c:"!field%%i!.">nul && set /a colorRight+=1
-	if "!field%%i!"=="!rfield%%i!" set /a positionRight+=1
-)
+	for /L %%i in (1 1 4) do (
+		if not defined field[%%i] goto selectField
+		for /L %%j in (1 1 4) do (
+			if "!secretColors[%%j]!"=="!field[%%i]!" (
+				set /a correctColors += 1
+			)
+		)
+		if "!secretColors[%%i]!"=="!field[%%i]!" (
+			set /a correctPositions += 1
+		)
+	)
 
-::--anzeigen des Verlaufs
-batbox /g 21 %verlaufY% /c 0x%backgroundcolor%f /d "%versuchnr%.)  "
-for /L %%i in (1,1,4) do (
-	batbox /c 0x%backgroundcolor%!field%%i! /d "O "
-	set "field%%i="
-)
-batbox /g 35 %verlaufY% /c 0x%backgroundcolor%f /d "| Farbe richtig: %colorRight%, Position richtig: %positionRight%"
-if %positionRight% EQU 4 goto :WIN
-::--update der Variablen
-set /a versuchnr+=1
-set /a verlaufY+=1
-::--neuer Versuch
-goto intrface
+	::show history:
+	batbox /g 21 %history_Y% /c 0x%backgroundcolor%f /d "%tryCount%.)  "
+	for /L %%i in (1 1 4) do (
+		batbox /c 0x%backgroundcolor%!field[%%i]! /d "O "
+		set "field[%%i]="
+	)
+	batbox /g 35 %history_Y% /c 0x%backgroundcolor%f /d "| Farben richtig: %correctColors%, Positionen richtig: %correctPositions%"
+	
+	if %correctPositions% equ 4 goto win
+	
+	set /a tryCount  += 1
+	set /a history_Y += 1
+	
+goto render
 
-:m2festle
 
-
-:settings
-cls&echo noch nicht verfuegbar.&timeout /t 2
-goto startanimation
-
-:WIN
-title GEWONNEN
-set /a verlaufY+=2
-batbox /c 0x%backgroundcolor%E
-:_win
-batbox /g 28 %verlaufY% /d "   RICHTIG!   " /w 50
-batbox /g 28 %verlaufY% /d ">  RICHTIG!  <" /w 50
-batbox /g 28 %verlaufY% /d ">> RICHTIG! <<" /w 50
-batbox /g 28 %verlaufY% /d " >>RICHTIG!<< " /w 50
-batbox /g 28 %verlaufY% /d ">> RICHTIG! <<" /w 50
-batbox /g 28 %verlaufY% /d ">  RICHTIG!  <" /w 50
-goto _win
+:win
+	title MASTERMIND - GEWONNEN
+	set /a history_Y += 2
+	batbox /c 0x%backgroundcolor%E
+	call src\animations win
