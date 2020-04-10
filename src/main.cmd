@@ -124,6 +124,12 @@ goto selectField
 		)
 		
 		for /L %%j in (1 1 4) do (
+			
+			if %%i neq %%j if "!field[%%i]!"=="!field[%%j]!" (
+				call animations checkButton c
+				goto selectField
+			)
+		
 			if "!secretColors[%%j]!"=="!field[%%i]!" (
 				set /a correctColors += 1
 			)
