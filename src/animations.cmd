@@ -25,13 +25,13 @@ exit /b 1
 exit /b 0
 
 :checkButtonAnimation
-	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 150
 	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
-	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 150
 	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
-	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 150
 	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
-	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 150
 	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
 exit /b 0
 

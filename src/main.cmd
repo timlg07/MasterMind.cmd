@@ -1,8 +1,9 @@
 :startAnimation
 	call animations start
 :startMenu
-	batbox /g 8 6 /c 0x0F /d ">>starten"
-	batbox /g 8 8 /c 0x07 /d "Anzahl der Farben: " /c 0x0c /d "[-]" /c 0x0f /d " %colornum% " /c 0x0a /d "[+]"
+	batbox /g 8 6 /c 0x%backgroundcolor%F /d ">>starten"
+	batbox /g 8 8 /c 0x%backgroundcolor%7 /d "Anzahl der Farben: " 
+	batbox        /c 0x%backgroundcolor%c /d "[-]" /c 0x%backgroundcolor%f /d " %colornum% " /c 0x%backgroundcolor%a /d "[+]"
 	batbox /g %right% %bottom%
 	for /f "tokens=1,2 delims=:" %%x in ('batbox /m') do (
 		if %%y equ 6 if %%x geq 8 if %%x leq 17 (
