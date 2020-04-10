@@ -24,6 +24,17 @@ exit /b 1
 	batbox /g 6  3 /c 0x0c /d "MASTERMINDbatch" /a 184 /w 200 
 exit /b 0
 
+:checkButtonAnimation
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
+	batbox /g 54 6 /c 0x%backgroundcolor%%~2 /d ">EINLOGGEN" /w 120
+	batbox /g 54 6 /c 0x%backgroundcolor%f   /d ">EINLOGGEN"
+exit /b 0
+
 :winAnimation
 	batbox /g 28 %history_Y% /d "   RICHTIG!   " /w 50
 	batbox /g 28 %history_Y% /d ">  RICHTIG!  <" /w 50
