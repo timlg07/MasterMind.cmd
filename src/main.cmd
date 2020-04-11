@@ -49,9 +49,11 @@ goto startMenu
 		set /a _index = 1 + colornum * %random%/32768 
 		set "_color=!color[%_index%]!"
 		:: make sure no color occurs twice:
-		for /L %%i in (1 1 %_i%) do (
-			if "!secretColors[%%i]!"=="%_color%" (
-				goto chooseColors
+		if %duplicates% equ false (
+			for /L %%i in (1 1 %_i%) do (
+				if "!secretColors[%%i]!"=="%_color%" (
+					goto chooseColors
+				)
 			)
 		)
 		set "secretColors[%_i%]=%_color%"
@@ -132,6 +134,7 @@ goto selectField
 
 :checkSelection
 	set /a correctColors = correctPositions = 0
+	set "correctIndices="
 
 	for /L %%i in (1 1 4) do (
 		if not defined field[%%i] (
@@ -141,15 +144,24 @@ goto selectField
 		
 		for /L %%j in (1 1 4) do (
 			
-			if %%i neq %%j if "!field[%%i]!"=="!field[%%j]!" (
+			if %duplicates% equ false if %%i neq %%j if "!field[%%i]!"=="!field[%%j]!" (
 				call animations checkButton c
 				goto selectField
 			)
 		
 			if "!secretColors[%%j]!"=="!field[%%i]!" (
-				set /a correctColors += 1
+				if %duplicates% equ true (
+					echo:!correctIndices! | findstr /c:"[user:%%i]"  >nul || (
+					echo:!correctIndices! | findstr /c:"[secret:%%j]">nul || (
+						set /a correctColors += 1
+						set "correctIndices=!correctIndices![user:%%i]; [secret:%%j]; "
+					))
+				) else (
+					set /a correctColors += 1
+				)
 			)
 		)
+		
 		if "!secretColors[%%i]!"=="!field[%%i]!" (
 			set /a correctPositions += 1
 		)
@@ -163,7 +175,7 @@ goto selectField
 		batbox /c 0x%backgroundcolor%!field[%%i]! /d "O "
 		set "field[%%i]="
 	)
-	batbox /g 35 %history_Y% /c 0x%backgroundcolor%f /d "| Farben richtig: %correctColors%, Positionen richtig: %correctPositions%"
+	batbox /g 35 %history_Y% /c 0x%backgroundcolor%f /d "| Richtige Farben: %correctColors%, Farbe und Position richtig: %correctPositions%"
 	
 	if %correctPositions% equ 4 goto win
 	
