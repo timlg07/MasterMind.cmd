@@ -11,11 +11,14 @@
 		batbox /c 0x%backgroundcolor%7 /d "[ ] Aus"
 	)
 	batbox /g %right% %bottom%
+	
 	for /f "tokens=1,2 delims=:" %%x in ('batbox /m') do (
+		rem start the main game
 		if %%y equ 6 if %%x geq 8 if %%x leq 17 (
 			cls
 			goto startGame
 		)
+		rem select amount of different colors
 		if %%y equ 8 (
 			if %%x gtr 26 if %%x lss 30 if %colornum% gtr 4 (
 				set /a colornum -= 1
@@ -26,6 +29,7 @@
 				goto startMenu
 			)
 		)
+		rem duplicate option
 		if %%y equ 10 (
 			if %%x gtr 41 if %%x lss 49 (
 				if %duplicates% equ true (
@@ -71,7 +75,7 @@ goto startMenu
 			set /a _i += 1
 		if %_i% leq %colornum% goto colorSelection
 
-	batbox /g 30  3 /c 0x%backgroundcolor%7 /d "Erst eines der Felder dann eine farbe anklicken"
+	batbox /g 30  3 /c 0x%backgroundcolor%7 /d "Erst eines der Felder, dann eine Farbe anklicken."
 	batbox /g 30  5 /c 0x%backgroundcolor%f /d "+----+----+----+----+"
 	batbox /g 30  6 /c 0x%backgroundcolor%f /d "|    |    |    |    |   >EINLOGGEN"
 	batbox /g 30  7 /c 0x%backgroundcolor%f /d "|    |    |    |    |"
