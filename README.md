@@ -9,11 +9,11 @@ Spielen Sie das Spiel Mastermind direkt in der Windows Kommandozeile!
 Ihr Ziel ist es den zufällig generierten Code, bestehend aus vier farbigen Kreisen, zu erraten ─ am besten in möglichst wenigen Versuchen.
 
 ## Spielablauf
-Zu Beginn können Sie Auswählen mit wie vielen verschiedenen Farben Sie spielen wollen: Am einfachsten ist der geheime Code zu erraten, wenn nur vier Farben verwendet werden; Mit jeder Farbe mehr steigen die Kombinationsmöglichkeiten und damit der Schwierigkeitsgrad. Sie können mit bis zu neun Farben spielen.  
-Nachdem Sie das Spiel gestartet haben, sehen Sie in der Mitte das virtuelle Gestell, dessen vier Felder Sie mit Farben befüllen können.  
-Klicken Sie hierzu ─ wie im Spiel beschrieben ─ zunächst auf eines der vier Felder und anschließend auf einen der farbigen Kreise links des Gestells.  
-Beachten Sie, dass in dieser Version bewusst keine Farbe doppelt in einem Code vorkommt.  
-Haben Sie Ihre Vermutung eingetragen, können Sie diese mit einem Klick auf ">Einloggen" überprüfen lassen. Der Code wird nun im Verlauf angezeigt, zusammen mit den Informationen darüber, wie viele Farben Sie korrekt erraten haben und wie viele dieser Farben an der richtigen Position sitzen.  
+- Zu Beginn können Sie Auswählen mit wie vielen verschiedenen Farben Sie spielen wollen: Am einfachsten ist der geheime Code zu erraten, wenn nur vier Farben verwendet werden; Mit jeder Farbe mehr steigen die Kombinationsmöglichkeiten und damit der Schwierigkeitsgrad. Sie können mit bis zu neun Farben spielen.  
+- Außerdem können Sie angeben, ob Farben mehrfach verwendet werden dürfen, oder ob jede Farbe maximal einmal im Code enthalten sein soll.  
+- Jetzt können Sie mit dem obersten Menüeintrag das Spiel starten und sehen dann das virtuelle Gestell, dessen vier Felder Sie mit Farben befüllen können.  
+Klicken Sie hierzu ─ wie im Spiel beschrieben ─ zunächst auf eines der vier Felder und anschließend auf einen der farbigen Kreise links des Gestells.    
+- Haben Sie Ihre Vermutung eingetragen, können Sie diese mit einem Klick auf ">Einloggen" überprüfen lassen. Der Code wird nun im Verlauf angezeigt, zusammen mit den Informationen darüber, wie viele der ausgewählten Kreise die korrekte Farbe haben und wie viele davon auch noch an der richtigen Position sitzen.  
 
 ## Ausführung des Spiels
 - Das Spiel kann direkt ohne Installation auf jedem Windows-Computer ausgeführt werden.
