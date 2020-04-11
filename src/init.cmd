@@ -17,6 +17,7 @@ set /a lines = 30
 set /a bottom = lines - 1
 set /a right = cols - 1
 set "backgroundcolor=0"
+set "duplicates=false"
 
 mode con cols=%cols% lines=%lines%
 color %backgroundcolor%f

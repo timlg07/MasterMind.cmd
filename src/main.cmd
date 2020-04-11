@@ -1,9 +1,15 @@
 :startAnimation
 	call animations start
 :startMenu
-	batbox /g 8 6 /c 0x%backgroundcolor%F /d ">>starten"
-	batbox /g 8 8 /c 0x%backgroundcolor%7 /d "Anzahl der Farben: " 
-	batbox        /c 0x%backgroundcolor%c /d "[-]" /c 0x%backgroundcolor%f /d " %colornum% " /c 0x%backgroundcolor%a /d "[+]"
+	batbox /g 8 6  /c 0x%backgroundcolor%F /d ">>starten"
+	batbox /g 8 8  /c 0x%backgroundcolor%7 /d "Anzahl der Farben: " 
+	batbox         /c 0x%backgroundcolor%c /d "[-]" /c 0x%backgroundcolor%f /d " %colornum% " /c 0x%backgroundcolor%a /d "[+]"
+	batbox /g 8 10 /c 0x%backgroundcolor%7 /d "Farben k" /a 148 /d "nnen mehrfach vorkommen: "
+	if %duplicates% equ true (
+		batbox /c 0x%backgroundcolor%a /d "[X] An "
+	) else (
+		batbox /c 0x%backgroundcolor%7 /d "[ ] Aus"
+	)
 	batbox /g %right% %bottom%
 	for /f "tokens=1,2 delims=:" %%x in ('batbox /m') do (
 		if %%y equ 6 if %%x geq 8 if %%x leq 17 (
@@ -18,6 +24,15 @@
 			if %%x gtr 32 if %%x lss 36 if %colornum% lss 9 (
 				set /a colornum += 1
 				goto startMenu
+			)
+		)
+		if %%y equ 10 (
+			if %%x gtr 41 if %%x lss 49 (
+				if %duplicates% equ true (
+					set "duplicates=false"
+				) else (
+					set "duplicates=true"
+				)
 			)
 		)
 	)
