@@ -22,4 +22,6 @@ mode con cols=%cols% lines=%lines%
 color %backgroundcolor%f
 title MASTERMIND
 
+if not exist batbox.exe call createBatbox
+
 main
